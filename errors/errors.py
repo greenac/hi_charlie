@@ -1,0 +1,2 @@
+class TransactionParseException(Exception):
+    pass
