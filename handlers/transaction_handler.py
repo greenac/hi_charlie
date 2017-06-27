@@ -1,4 +1,5 @@
 from handlers.csv_handler import CSVHandler
+from utils.transaction_printer import format_transaction
 
 
 class TransactionHandler:
@@ -10,11 +11,12 @@ class TransactionHandler:
     def run(self):
         self._fill_transactions()
         self._fill_mortgages()
+        print('Found', len(self._mortgages), 'mortgages')
         user_mortgages = self._mortgages_for_user()
         for user_id, transactions in user_mortgages.items():
             print('Mortgage payments for user:', user_id)
             for index, transaction in enumerate(transactions):
-                print('\t', index, ':', transaction)
+                print(index, ':', format_transaction(transaction))
         return None
 
     def _fill_transactions(self):
@@ -23,7 +25,7 @@ class TransactionHandler:
         return None
 
     def _is_mortgage(self, transaction):
-        return 'mortgage' in transaction.name
+        return 'mortgage' in transaction.name and transaction.account_type == 'depository' and transaction.amount > 0.0
 
     def _fill_mortgages(self):
         self._mortgages = [transaction for transaction in self._transactions if self._is_mortgage(transaction)]

@@ -42,3 +42,6 @@ class Transaction:
 
     def get_date(self):
         return date(self.year, self.month, self.day)
+
+    def key(self):
+        return '{}_{}_{}_{}_{}'.format(self.user_id, self.account_type, self.account_id, self.amount, self.get_date())
