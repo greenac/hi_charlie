@@ -19,13 +19,17 @@ class TransactionHandler:
                 print(index, ':', format_transaction(transaction))
         return None
 
+    # def check_periodicity(self):
+    #     periodic_transactions
     def _fill_transactions(self):
         csv_handler = CSVHandler(self._file_path)
         self._transactions = csv_handler.parse()
         return None
 
     def _is_mortgage(self, transaction):
-        return 'mortgage' in transaction.name and transaction.account_type == 'depository' and transaction.amount > 0.0
+        return (('mortgage' in transaction.name or 'rent' in transaction.name) and
+                transaction.account_type == 'depository'and
+                transaction.amount > 125.0)
 
     def _fill_mortgages(self):
         self._mortgages = [transaction for transaction in self._transactions if self._is_mortgage(transaction)]
